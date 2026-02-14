@@ -8,10 +8,8 @@ import pandas as pd
 from openai import OpenAI
 
 
-# ====== 你需要改的 2 个地方 ======
 MODEL_NAME = "doubao-seed-1-8-251228"   # 换模型
 PROMPT_PATH = "prompt.txt"
-# =================================
 
 
 # 输入输出文件
@@ -31,7 +29,6 @@ def read_prompt(path: str) -> str:
         return f.read().strip()
 
 def find_image_file(sample_id: str, images_dir: str) -> str:
-    # 支持 png/jpg/jpeg/webp
     exts = [".png", ".jpg", ".jpeg", ".webp"]
     for ext in exts:
         p = Path(images_dir) / f"{sample_id}{ext}"
@@ -40,7 +37,6 @@ def find_image_file(sample_id: str, images_dir: str) -> str:
     return ""
 
 def image_to_data_url(image_path: str) -> str:
-    # 把本地图片转成 data url（最省事，不用先上传图床）
     suffix = Path(image_path).suffix.lower()
     mime = {
         ".png": "image/png",
@@ -65,7 +61,6 @@ def extract_json(text: str):
     except Exception:
         pass
 
-    # 尝试找最外层 JSON
     m = re.search(r"\{.*\}", text, re.S)
     if not m:
         return None
