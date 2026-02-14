@@ -1,6 +1,6 @@
 # E-commerce Order Screenshot VLM Eval Demo
 
-一个轻量级的 VLM（视觉语言模型）评测 Demo：对电商订单详情页截图进行**结构化信息抽取 + 金额一致性校验（reasoning）**，并用 **Goldset 2.0真值表**，自动批量生成总体指标与分桶报告。
+一个轻量级的 VLM 评测 Demo：对电商订单详情页截图进行**结构化信息抽取 + 金额一致性校验（reasoning）**，并自动化批量跑模型输出和评测，自动生成总体指标与分桶报告。
 
 ---
 
@@ -12,8 +12,22 @@
 - 基于真值表（GT）自动评测并输出分桶报告（Domain / PageState / Info Completeness）
 
 **产出**
-- 批量预测结果（JSONL / 回填表）
+- 批量输出结果（JSONL / 回填表）
 - 自动评测报告（Excel，多 sheet：summary / error cases / bucket metrics）
+
+---
+
+## Repo 文件说明
+
+- `prompt.txt`：统一 Prompt（用于批量调用模型）
+- `gold set 2.0.xlsx`：真值表（GT）
+- `pred_results.xlsx`：模型输出回填表（含 `model_pred_json`）
+- `pred_results.jsonl`：批量预测输出（每行一个 JSON）
+- `run_batch_vlm.py`：脚本 1：批量跑模型 + 回填生成 `pred_results.xlsx/jsonl`
+- `eval_goldset_v3.py`：脚本 2：自动评测 + 分桶报告生成
+- `report_3.0.xlsx`：评测报告（自动生成）
+- `标注指南.pdf`：标注规则与字段口径
+- `项目复盘.pdf`：项目复盘与迭代思路
 
 ---
 
@@ -30,20 +44,6 @@
 - 当 `paid_amount`、`original_amount`、`discount_amount` 三者 `state=OK` 时：
   - 校验等式成立输出 `YES/NO`
 - 否则输出 `SKIP` 并解释跳过原因
-
----
-
-## Repo 文件说明
-
-- `prompt.txt`：统一 Prompt（用于批量调用模型）
-- `gold set 2.0.xlsx`：真值表（GT）
-- `pred_results.xlsx`：模型输出回填表（含 `model_pred_json`）
-- `pred_results.jsonl`：批量预测输出（每行一个 JSON）
-- `run_batch_vlm.py`：脚本 1：批量跑模型 + 回填生成 `pred_results.xlsx/jsonl`
-- `eval_goldset_v3.py`：脚本 2：自动评测 + 分桶报告生成
-- `report_3.0.xlsx`：评测报告（自动生成）
-- `标注指南.pdf`：标注规则与字段口径
-- `项目复盘.pdf`：项目复盘与迭代思路
 
 ---
 
